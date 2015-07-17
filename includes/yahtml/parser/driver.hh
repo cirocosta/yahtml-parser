@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include "parser.hh"
-#include "DOM.hh"
+#include "yahtml/DOM.hh"
 
 #define YY_DECL \
   yy::HTMLParser::symbol_type yylex (HTMLDriver& driver)

@@ -59,10 +59,6 @@ STR                 [^><]+
 
 %%
 
-long parse_int (const char* text)
-{
-}
-
 void HTMLDriver::scan_begin_source (const std::string& source)
 {
   src = new char[source.size() + 1];

@@ -10,7 +10,7 @@
 %code requires
 {
 #include <string>
-#include "yahtml/parser/DOM.hh"
+#include "yahtml/DOM.hh"
 }
 
 // passing the parsing context
