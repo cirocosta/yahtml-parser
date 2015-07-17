@@ -20,6 +20,8 @@ typedef std::shared_ptr<Node> DOMChild;
 typedef std::vector<DOMChild> DOMChildren;
 typedef std::map<std::string, std::string> AttrMap;
 
+std::ostream& operator<<(std::ostream& o, const DOMChild& child);
+
 class DOM
 {
 public:

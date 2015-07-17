@@ -36,22 +36,19 @@
 %token
   END 0 "End of File (EOF)"
 ;
-%token <std::string> TAG ENDTAG STR
-%token <int> NUM
+%token <std::string> TAG ENDTAG TEXT
+%type <DOMChild> dom value;
 
-%type <std::string> dom value;
-
+%printer { yyoutput << $$; } <*>;
 %%
-
 %start dom;
 
-dom: TAG value ENDTAG {$$ = $1 + $2 + $3;}
+dom: TAG value ENDTAG {$$ = DOMChild (new Element($1, AttrMap {})); }
    ;
 
-value:  dom
-     |  STR
-     |  NUM
-     |  value dom
+value:  dom           {$$ = $1; }
+     |  TEXT          {$$ = DOMChild (new Text($1)); }
+     |  value dom     {$$ = DOMChild (new Element("a", AttrMap{})); }
      ;
 
 %%

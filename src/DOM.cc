@@ -69,3 +69,10 @@ std::ostream& operator<<(std::ostream& o, const Text& text)
 {
   return (text.print(o, -1), o);
 }
+
+std::ostream& operator<<(std::ostream& o, const DOMChild& child)
+{
+  o << *(child.get());
+
+  return o;
+}

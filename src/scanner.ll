@@ -19,11 +19,13 @@ static yy::location loc;
 %option noyywrap nounput batch debug noinput
 
 ALPHA               [\x41-\x5A\x61-\x7A]
+AB_LEFT             "<"
+AB_RIGHT            ">"
+AB_LEFT_CLOSED      "</"
 
 TAG                 "<"{ALPHA}+">"
 ENDTAG              "</"{ALPHA}+">"
-NUM                 [0-9]+
-STR                 [^><]+
+TEXT                [^><]+
 
 %{
   // Code run each time a pattern is matched.
@@ -41,17 +43,7 @@ STR                 [^><]+
 
 {ENDTAG}        return yy::HTMLParser::make_ENDTAG(yytext, loc);
 
-{NUM}           {
-                  errno = 0;
-                  long n = std::strtol(yytext, NULL, 10);
-
-                  if (!(INT_MIN <= n && n <= INT_MAX && errno != ERANGE))
-                    driver.error(loc, "Integer out of range.");
-
-                  return yy::HTMLParser::make_NUM(n, loc);
-                }
-
-{STR}           return yy::HTMLParser::make_STR(yytext, loc);
+{TEXT}           return yy::HTMLParser::make_TEXT(yytext, loc);
 
 .               driver.error(loc, "Invalid Character");
 

@@ -12,7 +12,7 @@ TEST(Dummy, DummyTest) {
   DOMChild paragraph (new Element ("p", AttrMap {}, DOMChildren {text}));
   DOMChild body (new Element ("body", AttrMap {}, DOMChildren {paragraph}));
 
-  std::cout << *(body.get()) << std::endl;
+  std::cout << body << std::endl;
 
   EXPECT_EQ(1, 1);
 }
