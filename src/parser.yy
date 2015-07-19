@@ -37,7 +37,8 @@
   AB_RIGHT          ">"
 ;
 %token <std::string> NAME TEXT START_TAG END_TAG
-%type <DOMChild> element value;
+%type <DOMChild> dom element;
+%type <DOMChildren> value;
 
 %printer { yyoutput << $$; } <*>;
 
@@ -45,20 +46,19 @@
 
 %start dom;
 
-dom: element  { driver.dom = $1; }
+dom: element  { driver.dom = $1; $$ = driver.dom; }
 
 element:  START_TAG AB_RIGHT
              value
           END_TAG {
-                    $$ = DOMChild (new Element($1, AttrMap {},
-                                   DOMChildren {$3}));
+                    $$ = DOMChild (new Element($1, AttrMap {}, $3));
                   }
-   ;
+       ;
 
-value:  %empty            {$$ = DOMChild (new Text("")); }
-     |  element           {$$ = $1; }
-     |  TEXT              {$$ = DOMChild (new Text($1)); }
-     |  value element     {$$ = DOMChild (new Element("a", AttrMap{})); }
+value:  %empty            {$$ = DOMChildren { DOMChild (new Text("")) }; }
+     |  element           {$$ = DOMChildren { $1 }; }
+     |  TEXT              {$$ = DOMChildren { DOMChild (new Text($1)) }; }
+     |  value element     {$1.push_back($2); $$ = $1; }
      ;
 
 %%

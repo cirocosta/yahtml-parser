@@ -76,3 +76,11 @@ std::ostream& operator<<(std::ostream& o, const DOMChild& child)
 
   return o;
 }
+
+std::ostream& operator<<(std::ostream& o, const DOMChildren& children)
+{
+  for (const auto &child : children)
+    o << child;
+
+  return o;
+}

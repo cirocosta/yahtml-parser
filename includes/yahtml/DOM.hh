@@ -21,6 +21,7 @@ typedef std::vector<DOMChild> DOMChildren;
 typedef std::map<std::string, std::string> AttrMap;
 
 std::ostream& operator<<(std::ostream& o, const DOMChild& child);
+std::ostream& operator<<(std::ostream& o, const DOMChildren& children);
 
 // TODO turn this into a 'better DOMChild'.
 class DOM
