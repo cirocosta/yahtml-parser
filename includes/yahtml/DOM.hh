@@ -22,6 +22,7 @@ typedef std::map<std::string, std::string> AttrMap;
 
 std::ostream& operator<<(std::ostream& o, const DOMChild& child);
 
+// TODO turn this into a 'better DOMChild'.
 class DOM
 {
 public:

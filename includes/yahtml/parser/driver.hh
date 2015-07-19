@@ -13,13 +13,10 @@ YY_DECL;
 
 typedef struct yy_buffer_state * YY_BUFFER_STATE;
 
-/**
- * Public Interface to the HTTP Parser
- */
 class HTMLDriver
 {
 public:
-  DOM dom;
+  DOMChild dom;
   int result;
 
   std::string file;

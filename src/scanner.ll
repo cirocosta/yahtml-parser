@@ -18,14 +18,13 @@ static yy::location loc;
 
 %option noyywrap nounput batch debug noinput
 
-ALPHA               [\x41-\x5A\x61-\x7A]
-AB_LEFT             "<"
-AB_RIGHT            ">"
-AB_LEFT_CLOSED      "</"
-
-TAG                 "<"{ALPHA}+">"
-ENDTAG              "</"{ALPHA}+">"
+ALPHA               [a-zA-Z]
+NAME                {ALPHA}+
 TEXT                [^><]+
+
+AB_RIGHT            ">"
+START_TAG           "<"{NAME}
+END_TAG             "</"{NAME}">"
 
 %{
   // Code run each time a pattern is matched.
@@ -39,11 +38,20 @@ TEXT                [^><]+
   loc.step();
 %}
 
-{TAG}           return yy::HTMLParser::make_TAG(yytext, loc);
+{START_TAG}     return yy::HTMLParser::make_START_TAG(yytext+1, loc);
 
-{ENDTAG}        return yy::HTMLParser::make_ENDTAG(yytext, loc);
+{END_TAG}       {
+                  return yy::HTMLParser::make_END_TAG(
+                      std::string(yytext, 2, yyleng-3), loc);
+                }
 
-{TEXT}           return yy::HTMLParser::make_TEXT(yytext, loc);
+{TEXT}          return yy::HTMLParser::make_TEXT(yytext, loc);
+
+"<"             return yy::HTMLParser::make_AB_LEFT(loc);
+
+">"             return yy::HTMLParser::make_AB_RIGHT(loc);
+
+"</"            return yy::HTMLParser::make_AB_LEFT_CLOSED(loc);
 
 .               driver.error(loc, "Invalid Character");
 

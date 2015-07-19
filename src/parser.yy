@@ -32,23 +32,33 @@
 }
 
 %define api.token.prefix {HTML_}
-
 %token
-  END 0 "End of File (EOF)"
+  END 0             "End of File (EOF)"
+  AB_LEFT           "<"
+  AB_RIGHT          ">"
+  AB_LEFT_CLOSED    "</"
 ;
-%token <std::string> TAG ENDTAG TEXT
-%type <DOMChild> dom value;
+%token <std::string> NAME TEXT START_TAG END_TAG
+%type <DOMChild> element value;
 
 %printer { yyoutput << $$; } <*>;
+
 %%
+
 %start dom;
 
-dom: TAG value ENDTAG {$$ = DOMChild (new Element($1, AttrMap {})); }
+dom: element  { driver.dom = $1; }
+
+element:  START_TAG AB_RIGHT
+             value
+          END_TAG {
+        $$ = DOMChild (new Element($1, AttrMap {}, DOMChildren {$3}));
+      }
    ;
 
-value:  dom           {$$ = $1; }
+value:  element           {$$ = $1; }
      |  TEXT          {$$ = DOMChild (new Text($1)); }
-     |  value dom     {$$ = DOMChild (new Element("a", AttrMap{})); }
+     |  value element     {$$ = DOMChild (new Element("a", AttrMap{})); }
      ;
 
 %%
