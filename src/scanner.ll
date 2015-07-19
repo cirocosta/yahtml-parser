@@ -47,11 +47,7 @@ END_TAG             "</"{NAME}">"
 
 {TEXT}          return yy::HTMLParser::make_TEXT(yytext, loc);
 
-"<"             return yy::HTMLParser::make_AB_LEFT(loc);
-
 ">"             return yy::HTMLParser::make_AB_RIGHT(loc);
-
-"</"            return yy::HTMLParser::make_AB_LEFT_CLOSED(loc);
 
 .               driver.error(loc, "Invalid Character");
 
