@@ -31,7 +31,7 @@ before_script:
   - cmake -DBISON_EXECUTABLE=${BISON_EXEC} ..
 
 script:
-  - make && make test
+  - make && make test && valgrind --leak-check=yes --error-exitcode=1 ./tests/parser_test
 
 notifications:
   email: false
