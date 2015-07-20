@@ -22,6 +22,7 @@ install:
   - ./configure
   - make
   - export BISON_EXEC=$(pwd)/src/bison
+  - export BISON_PKGDATADIR=$(pwd)/data
   - cd ..
 
 before_script:
