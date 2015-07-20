@@ -34,8 +34,7 @@
 %define api.token.prefix {HTML_}
 %token
   END 0             "End of File (EOF)"
-  AB_RIGHT          ">"
-  SP                " "
+  AB_RIGHT
 ;
 %token <std::string>
   NAME
@@ -50,7 +49,7 @@
 %type <AttrMap> attrs;
 %type <Attr> attr;
 
-/* %printer { yyoutput << $$; } <*>; */
+%printer { yyoutput << $$; } <*>;
 
 %%
 
@@ -65,11 +64,11 @@ element:  START_TAG attrs AB_RIGHT
                   }
        ;
 
-attr: ATTR_KEY ATTR_VALUE     { $$ = std::make_pair($1, $2); }
-    | ATTR_KEY ATTR_VALUE     { $$ = std::make_pair($1, $2); }
+attr: ATTR_KEY ATTR_VALUE     { $$ = Attr {$1, $2}; }
     ;
 
 attrs: %empty       { $$ = AttrMap {}; }
+     | attr         { $$ = AttrMap { $1 }; }
      | attrs attr   { $1.emplace($2); $$ = $1; }
      ;
 

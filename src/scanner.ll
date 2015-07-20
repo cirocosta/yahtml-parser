@@ -18,12 +18,14 @@ static yy::location loc;
 
 %option noyywrap nounput batch debug noinput
 
+%x TAG
+
 ALPHA               [a-zA-Z]
 NAME                {ALPHA}+
 TEXT                [^><]+
 
 ATTR_KEY            " "{NAME}"="
-ATTR_VALUE          "\""([^\"]|\\.)*"\""
+ATTR_VALUE          \"([^\"]|\\.)*\"
 
 AB_RIGHT            ">"
 START_TAG           "<"{NAME}
@@ -41,16 +43,30 @@ END_TAG             "</"{NAME}">"
   loc.step();
 %}
 
-{START_TAG}     return yy::HTMLParser::make_START_TAG(yytext+1, loc);
+{START_TAG}     {
+                  BEGIN(TAG);
+                  return yy::HTMLParser::make_START_TAG(yytext+1, loc);
+                }
+
+<TAG>{AB_RIGHT} {
+                  BEGIN(INITIAL);
+                  return yy::HTMLParser::make_AB_RIGHT(loc);
+                }
+
+<TAG>{ATTR_KEY} {
+                  return yy::HTMLParser::make_ATTR_KEY(
+                        std::string(yytext, 1, yyleng-2), loc);
+                }
+
+<TAG>{ATTR_VALUE} {
+                    return yy::HTMLParser::make_ATTR_VALUE(
+                        std::string(yytext, 1, yyleng-2), loc);
+                  }
 
 {END_TAG}       {
                   return yy::HTMLParser::make_END_TAG(
                       std::string(yytext, 2, yyleng-3), loc);
                 }
-
-{ATTR_KEY}      return yy::HTMLParser::make_ATTR_KEY(yytext, loc);
-
-{ATTR_VALUE}    return yy::HTMLParser::make_ATTR_VALUE(yytext, loc);
 
 {TEXT}          return yy::HTMLParser::make_TEXT(yytext, loc);
 
