@@ -19,9 +19,14 @@ struct Element;
 typedef std::shared_ptr<Node> DOMChild;
 typedef std::vector<DOMChild> DOMChildren;
 typedef std::map<std::string, std::string> AttrMap;
+typedef std::pair<std::string, std::string> Attr;
+
 
 std::ostream& operator<<(std::ostream& o, const DOMChild& child);
 std::ostream& operator<<(std::ostream& o, const DOMChildren& children);
+
+std::ostream& operator<<(std::ostream& o, const Attr& attr);
+std::ostream& operator<<(std::ostream& o, const AttrMap& attrmap);
 
 // TODO turn this into a 'better DOMChild'.
 class DOM

@@ -22,6 +22,9 @@ ALPHA               [a-zA-Z]
 NAME                {ALPHA}+
 TEXT                [^><]+
 
+ATTR_KEY            " "{NAME}"="
+ATTR_VALUE          "\""([^\"]|\\.)*"\""
+
 AB_RIGHT            ">"
 START_TAG           "<"{NAME}
 END_TAG             "</"{NAME}">"
@@ -44,6 +47,10 @@ END_TAG             "</"{NAME}">"
                   return yy::HTMLParser::make_END_TAG(
                       std::string(yytext, 2, yyleng-3), loc);
                 }
+
+{ATTR_KEY}      return yy::HTMLParser::make_ATTR_KEY(yytext, loc);
+
+{ATTR_VALUE}    return yy::HTMLParser::make_ATTR_VALUE(yytext, loc);
 
 {TEXT}          return yy::HTMLParser::make_TEXT(yytext, loc);
 

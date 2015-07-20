@@ -29,14 +29,9 @@ void Element::print(std::ostream& where, int ident) const
   while (i --> 0)
     where << "\t";
 
-  where << "<" << this->tag_name;
+  where << "<" << tag_name << attr_map << ">" << std::endl;
 
-  for (auto const &attr : this->attr_map)
-    where << attr.first << "=\"" << attr.second << "\" ";
-
-  where << ">" << std::endl;
-
-  for (auto const &child : this->children) {
+  for (auto const &child : children) {
     child.get()->print(where, ident);
     where << std::endl;
   }
@@ -45,7 +40,7 @@ void Element::print(std::ostream& where, int ident) const
   while (i --> 0)
     where << "\t";
 
-  where << "</" << this->tag_name << ">";
+  where << "</" << tag_name << ">";
 }
 
 std::ostream& operator<<(std::ostream& o, const Element& e)
@@ -58,11 +53,14 @@ Text::Text(std::string t) : Node(NodeType::Text), text(t) { }
 
 void Text::print(std::ostream& where, int ident) const
 {
+  if (text.empty())
+    return;
+
   int i = ++ident;
 
   while (i --> 0)
     where << "\t";
-  where << this->text;
+  where << text;
 }
 
 std::ostream& operator<<(std::ostream& o, const Text& text)
@@ -84,3 +82,19 @@ std::ostream& operator<<(std::ostream& o, const DOMChildren& children)
 
   return o;
 }
+
+std::ostream& operator<<(std::ostream& o, const Attr& attr)
+{
+  o << " " << attr.first << "=\"" << attr.second << "\"";
+
+  return o;
+}
+
+std::ostream& operator<<(std::ostream& o, const AttrMap& attrmap)
+{
+  for (const auto& attr : attrmap)
+    o << attr;
+
+  return o;
+}
+

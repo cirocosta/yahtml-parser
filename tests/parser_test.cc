@@ -55,7 +55,7 @@ TEST(Html, NestedWithText) {
 }
 
 TEST(Html, NestedWithSimblings) {
-  bool debug = true;
+  bool debug = false;
   HTMLDriver driver (debug, debug);
   const char* source =
     "<body>"
@@ -91,4 +91,22 @@ TEST(Html, NestedWithSimblings) {
   EXPECT_EQ(tag2->children.size(), 1);
   EXPECT_EQ(tag2->children.front().get()->type, NodeType::Text);
 }
+
+/* TEST(Html, FlatWithOneAttribute) { */
+/*   bool debug = true; */
+/*   HTMLDriver driver(debug, debug); */
+/*   const char* source = */
+/*     "<body class=\"hue\">" */
+/*     "</body>" */
+/*     ""; */
+/*   driver.parse_source(source); */
+
+/*   EXPECT_EQ(driver.dom.get()->type, NodeType::Element); */
+
+/*   Element* body = dynamic_cast<Element*>(driver.dom.get()); */
+
+/*   EXPECT_EQ(body->tag_name, "body"); */
+/*   EXPECT_EQ(body->attr_map.size(), 1); */
+/*   EXPECT_EQ(body->attr_map["class"], "hue"); */
+/* } */
 

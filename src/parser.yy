@@ -35,12 +35,22 @@
 %token
   END 0             "End of File (EOF)"
   AB_RIGHT          ">"
+  SP                " "
 ;
-%token <std::string> NAME TEXT START_TAG END_TAG
+%token <std::string>
+  NAME
+  TEXT
+  START_TAG
+  END_TAG
+  ATTR_KEY
+  ATTR_VALUE
+;
 %type <DOMChild> dom element;
 %type <DOMChildren> value;
+%type <AttrMap> attrs;
+%type <Attr> attr;
 
-%printer { yyoutput << $$; } <*>;
+/* %printer { yyoutput << $$; } <*>; */
 
 %%
 
@@ -48,12 +58,20 @@
 
 dom: element  { driver.dom = $1; $$ = driver.dom; }
 
-element:  START_TAG AB_RIGHT
+element:  START_TAG attrs AB_RIGHT
              value
           END_TAG {
-                    $$ = DOMChild (new Element($1, AttrMap {}, $3));
+                    $$ = DOMChild (new Element($1, $2, $4));
                   }
        ;
+
+attr: ATTR_KEY ATTR_VALUE     { $$ = std::make_pair($1, $2); }
+    | ATTR_KEY ATTR_VALUE     { $$ = std::make_pair($1, $2); }
+    ;
+
+attrs: %empty       { $$ = AttrMap {}; }
+     | attrs attr   { $1.emplace($2); $$ = $1; }
+     ;
 
 value:  %empty            {$$ = DOMChildren { DOMChild (new Text("")) }; }
      |  element           {$$ = DOMChildren { $1 }; }
