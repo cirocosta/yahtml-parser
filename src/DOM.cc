@@ -20,8 +20,10 @@ std::ostream& operator<<(std::ostream& o, const Node& node)
 }
 
 
-Element::Element(std::string name, AttrMap attrs, DOMChildren dc)
-  : Node(NodeType::Element, dc), tag_name(name), attr_map(attrs)
+Element::Element(std::string name, AttrMap attrs,
+                 DOMChildren dc, DOMClasses klasses)
+  : Node(NodeType::Element, dc), tag_name(name), attr_map(attrs),
+    classes(klasses)
 { }
 
 void Element::print(std::ostream& where, int ident) const

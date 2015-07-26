@@ -20,6 +20,7 @@ struct Element;
 
 typedef std::shared_ptr<Node> DOMChild;
 typedef std::vector<DOMChild> DOMChildren;
+typedef std::vector<std::string> DOMClasses;
 
 struct Attr : std::pair<std::string, std::string>
 {
@@ -60,9 +61,12 @@ class Element : public Node
 {
 public:
   std::string tag_name;
+  DOMClasses classes;
   AttrMap attr_map;
 
-  Element(std::string name, AttrMap attrs, DOMChildren dc = DOMChildren {});
+  Element(std::string name, AttrMap attrs,
+          DOMChildren dc = DOMChildren {},
+          DOMClasses classes = DOMClasses {});
 
   void print(std::ostream& where, int ident) const override;
 };

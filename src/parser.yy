@@ -11,6 +11,7 @@
 %code requires
 {
 #include <string>
+#include "yahtml/Utils.hh"
 #include "yahtml/DOM.hh"
 }
 
@@ -56,28 +57,41 @@
 
 %start dom;
 
-dom: element  { driver.dom = $1; $$ = driver.dom; }
+dom:
+  element  { driver.dom = $1; $$ = driver.dom; }
+  ;
 
-element:  START_TAG attrs AB_RIGHT
-             value
-          END_TAG {
-                    $$ = DOMChild (new Element($1, $2, $4));
-                  }
+element
+  : START_TAG attrs AB_RIGHT
+       value
+    END_TAG {
+  AttrMap::const_iterator s = $2.find("class");
+
+  if (s != $2.end()) {
+    $$ = DOMChild (new Element($1, $2, $4,
+                   yahtml::utils::split_str($2["class"])));
+  } else {
+    $$ = DOMChild (new Element($1, $2, $4));
+  }
+            }
        ;
 
-attr: ATTR_KEY ATTR_VALUE     { $$ = Attr {$1, $2}; }
-    ;
+attr
+  : ATTR_KEY ATTR_VALUE  { $$ = Attr {$1, $2}; }
+  ;
 
-attrs: %empty       { $$ = AttrMap {}; }
-     | attr         { $$ = AttrMap { $1 }; }
-     | attrs attr   { $1.emplace($2); $$ = $1; }
-     ;
+attrs
+  : %empty       { $$ = AttrMap {}; }
+  | attr         { $$ = AttrMap { $1 }; }
+  | attrs attr   { $1.emplace($2); $$ = $1; }
+  ;
 
-value:  %empty            {$$ = DOMChildren { DOMChild (new Text("")) }; }
-     |  element           {$$ = DOMChildren { $1 }; }
-     |  TEXT              {$$ = DOMChildren { DOMChild (new Text($1)) }; }
-     |  value element     {$1.push_back($2); $$ = $1; }
-     ;
+value
+  :  %empty         {$$ = DOMChildren { DOMChild (new Text("")) }; }
+  |  element        {$$ = DOMChildren { $1 }; }
+  |  TEXT           {$$ = DOMChildren { DOMChild (new Text($1)) }; }
+  |  value element  {$1.push_back($2); $$ = $1; }
+  ;
 
 %%
 

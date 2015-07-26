@@ -156,3 +156,44 @@ TEST(Html, NestedMultipleAttributes) {
   EXPECT_EQ(text->text, "huehue brbr");
 }
 
+TEST(Html, EmptyClassAttribute) {
+  bool debug = false;
+  HTMLDriver driver(debug, debug);
+  const char* source =
+    "<body class=\"\">"
+    "</body>"
+    "";
+  driver.parse_source(source);
+
+  EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
+
+  Element* body = dynamic_cast<Element*>(driver.dom.get());
+
+  EXPECT_EQ(body->tag_name, "body");
+  EXPECT_EQ(body->attr_map.size(), 1);
+  EXPECT_EQ(body->attr_map["class"], "");
+  EXPECT_EQ(body->classes.size(), 0);
+}
+
+TEST(Html, MultipleClassesAttribute) {
+  bool debug = false;
+  HTMLDriver driver(debug, debug);
+  const char* source =
+    "<body class=\"hue br lol\">"
+    "</body>"
+    "";
+  driver.parse_source(source);
+
+  EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
+
+  Element* body = dynamic_cast<Element*>(driver.dom.get());
+
+  EXPECT_EQ(body->tag_name, "body");
+  EXPECT_EQ(body->attr_map.size(), 1);
+  EXPECT_EQ(body->attr_map["class"], "hue br lol");
+
+  EXPECT_EQ(body->classes[0], "hue");
+  EXPECT_EQ(body->classes[1], "br");
+  EXPECT_EQ(body->classes[2], "lol");
+}
+
