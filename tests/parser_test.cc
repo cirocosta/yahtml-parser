@@ -3,6 +3,8 @@
 #include "gtest/gtest.h"
 #include "yahtml/parser/driver.hh"
 
+using namespace yahtml;
+
 TEST(Html, NestedWithoutText) {
   bool debug = false;
   HTMLDriver driver (debug, debug);

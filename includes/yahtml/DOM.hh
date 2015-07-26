@@ -9,6 +9,8 @@
 #include <map>
 #include <vector>
 
+namespace yahtml {
+
 class HTMLDriver;
 
 class DOM;
@@ -29,10 +31,6 @@ struct AttrMap : std::map<std::string, std::string>
   using std::map<std::string, std::string>::map;
 };
 
-std::ostream& operator<<(std::ostream& o, const DOMChild& child);
-std::ostream& operator<<(std::ostream& o, const DOMChildren& children);
-std::ostream& operator<<(std::ostream& o, const AttrMap& attrmap);
-std::ostream& operator<<(std::ostream& o, const Attr& attr);
 
 // TODO turn this into a 'better DOMChild'.
 class DOM
@@ -57,8 +55,6 @@ public:
 
   virtual void print(std::ostream& where, int ident) const = 0;
 };
-std::ostream& operator<<(std::ostream&, const Node&);
-
 
 class Element : public Node
 {
@@ -70,7 +66,6 @@ public:
 
   void print(std::ostream& where, int ident) const override;
 };
-std::ostream& operator<<(std::ostream&, const Element&);
 
 
 struct Text : public Node
@@ -81,6 +76,16 @@ struct Text : public Node
 
   void print(std::ostream& where, int ident) const override;
 };
-std::ostream& operator<<(std::ostream&, const Text&);
+
+std::ostream& operator<<(std::ostream&, const yahtml::Text&);
+std::ostream& operator<<(std::ostream&, const yahtml::Node&);
+std::ostream& operator<<(std::ostream&, const yahtml::Element&);
+std::ostream& operator<<(std::ostream& o, const yahtml::DOMChild& child);
+std::ostream& operator<<(std::ostream& o, const yahtml::DOMChildren& children);
+std::ostream& operator<<(std::ostream& o, const yahtml::AttrMap& attrmap);
+std::ostream& operator<<(std::ostream& o, const yahtml::Attr& attr);
+
+}; // !ns yahtml
+
 
 #endif

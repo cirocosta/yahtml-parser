@@ -12,7 +12,7 @@
 #define yywrap() 1
 
 // The location of the current token.
-static yy::location loc;
+static yahtml::location loc;
 
 %}
 
@@ -45,40 +45,40 @@ END_TAG             "</"{NAME}">"
 
 {START_TAG}     {
                   BEGIN(TAG);
-                  return yy::HTMLParser::make_START_TAG(yytext+1, loc);
+                  return yahtml::HTMLParser::make_START_TAG(yytext+1, loc);
                 }
 
 <TAG>{AB_RIGHT} {
                   BEGIN(INITIAL);
-                  return yy::HTMLParser::make_AB_RIGHT(loc);
+                  return yahtml::HTMLParser::make_AB_RIGHT(loc);
                 }
 
 <TAG>{ATTR_KEY} {
-                  return yy::HTMLParser::make_ATTR_KEY(
+                  return yahtml::HTMLParser::make_ATTR_KEY(
                         std::string(yytext, 1, yyleng-2), loc);
                 }
 
 <TAG>{ATTR_VALUE} {
-                    return yy::HTMLParser::make_ATTR_VALUE(
+                    return yahtml::HTMLParser::make_ATTR_VALUE(
                         std::string(yytext, 1, yyleng-2), loc);
                   }
 
 {END_TAG}       {
-                  return yy::HTMLParser::make_END_TAG(
+                  return yahtml::HTMLParser::make_END_TAG(
                       std::string(yytext, 2, yyleng-3), loc);
                 }
 
-{TEXT}          return yy::HTMLParser::make_TEXT(yytext, loc);
+{TEXT}          return yahtml::HTMLParser::make_TEXT(yytext, loc);
 
-">"             return yy::HTMLParser::make_AB_RIGHT(loc);
+">"             return yahtml::HTMLParser::make_AB_RIGHT(loc);
 
 .               driver.error(loc, "Invalid Character");
 
-<<EOF>>         return yy::HTMLParser::make_END(loc);
+<<EOF>>         return yahtml::HTMLParser::make_END(loc);
 
 %%
 
-void HTMLDriver::scan_begin_source (const std::string& source)
+void yahtml::HTMLDriver::scan_begin_source (const std::string& source)
 {
   src = new char[source.size() + 1];
   std::copy(source.begin(), source.end(), src);
@@ -88,14 +88,14 @@ void HTMLDriver::scan_begin_source (const std::string& source)
   buffer = yy_scan_string(src);
 }
 
-void HTMLDriver::scan_end_source ()
+void yahtml::HTMLDriver::scan_end_source ()
 {
   yy_delete_buffer(buffer);
   delete[] src;
 }
 
 
-void HTMLDriver::scan_begin ()
+void yahtml::HTMLDriver::scan_begin ()
 {
   yy_flex_debug = trace_scanning;
 
@@ -108,12 +108,12 @@ void HTMLDriver::scan_begin ()
   yy_switch_to_buffer(buffer);
 }
 
-void HTMLDriver::scan_destroy ()
+void yahtml::HTMLDriver::scan_destroy ()
 {
   yylex_destroy();
 }
 
-void HTMLDriver::scan_end ()
+void yahtml::HTMLDriver::scan_end ()
 {
   yy_flush_buffer(buffer);
   yy_delete_buffer(buffer);

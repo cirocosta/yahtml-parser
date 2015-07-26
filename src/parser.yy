@@ -2,6 +2,7 @@
 %require "3.0.4"
 
 %defines
+%define api.namespace {yahtml}
 %define parser_class_name {HTMLParser}
 %define api.token.constructor
 %define api.value.type variant
@@ -80,7 +81,7 @@ value:  %empty            {$$ = DOMChildren { DOMChild (new Text("")) }; }
 
 %%
 
-void yy::HTMLParser::error (const location_type& l, const std::string& m)
+void yahtml::HTMLParser::error (const location_type& l, const std::string& m)
 {
   driver.error(l, m);
 }

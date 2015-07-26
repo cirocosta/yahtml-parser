@@ -1,5 +1,7 @@
 #include "yahtml/DOM.hh"
 
+namespace yahtml {
+
 DOM::DOM () { }
 DOM::~DOM () { }
 
@@ -97,4 +99,7 @@ std::ostream& operator<<(std::ostream& o, const AttrMap& attrmap)
 
   return o;
 }
+
+};
+
 

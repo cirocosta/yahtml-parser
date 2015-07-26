@@ -7,9 +7,11 @@
 #include "yahtml/DOM.hh"
 
 #define YY_DECL \
-  yy::HTMLParser::symbol_type yylex (HTMLDriver& driver)
+  yahtml::HTMLParser::symbol_type yylex (yahtml::HTMLDriver& driver)
 
 YY_DECL;
+
+namespace yahtml {
 
 typedef struct yy_buffer_state * YY_BUFFER_STATE;
 
@@ -41,8 +43,10 @@ public:
   void scan_end_source();
   void scan_destroy();
 
-  void error(const yy::location& l, const std::string& m);
+  void error(const yahtml::location& l, const std::string& m);
   void error(const std::string& m);
 };
+
+}; // !ns yahtml
 
 #endif

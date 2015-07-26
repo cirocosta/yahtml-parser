@@ -6,6 +6,8 @@
 #include "gtest/gtest.h"
 #include "yahtml/DOM.hh"
 
+using namespace yahtml;
+
 TEST(Dom, SimpleDomOutput) {
   std::ostringstream actual;
   DOMChild text (new Text("text"));
