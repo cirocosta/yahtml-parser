@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include "parser.hh"
+#include "yahtml_parser.hh"
 #include "yahtml/DOM.hh"
 
 #define YY_DECL \
@@ -50,3 +50,4 @@ public:
 }; // !ns yahtml
 
 #endif
+

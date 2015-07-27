@@ -1,5 +1,4 @@
 #include "yahtml/parser/driver.hh"
-#include "parser.hh"
 
 namespace yahtml {
 
