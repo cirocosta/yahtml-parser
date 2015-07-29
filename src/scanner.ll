@@ -11,6 +11,11 @@
 #undef yywrap
 #define yywrap() 1
 
+#define YY_DECL \
+  yahtml::HTMLParser::symbol_type yylex (yahtml::HTMLDriver& driver)
+
+YY_DECL;
+
 // The location of the current token.
 static yahtml::location loc;
 
@@ -120,3 +125,4 @@ void yahtml::HTMLDriver::scan_end ()
   fclose(yyin);
 }
 
+#undef YY_DECL

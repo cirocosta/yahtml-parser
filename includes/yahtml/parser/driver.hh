@@ -6,10 +6,6 @@
 #include "parser.hh"
 #include "yahtml/DOM.hh"
 
-#define YY_DECL \
-  yahtml::HTMLParser::symbol_type yylex (yahtml::HTMLDriver& driver)
-
-YY_DECL;
 
 namespace yahtml {
 

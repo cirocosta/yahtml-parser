@@ -31,6 +31,10 @@
 %code
 {
 #include "yahtml/parser/driver.hh"
+#define YY_DECL \
+  yahtml::HTMLParser::symbol_type yylex (yahtml::HTMLDriver& driver)
+
+YY_DECL;
 }
 
 %define api.token.prefix {HTML_}
@@ -100,3 +104,4 @@ void yahtml::HTMLParser::error (const location_type& l, const std::string& m)
   driver.error(l, m);
 }
 
+#undef YY_DECL
