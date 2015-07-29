@@ -1,5 +1,3 @@
-message(VARIABLES " =${yahtml-parser_INCLUDES} ${yahtml-parser_LIBS}")
-
 include_directories(${yahtml-parser_INCLUDES})
 
 add_executable(parser_test parser_test.cc)
