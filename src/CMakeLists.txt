@@ -1,4 +1,4 @@
-BISON_TARGET(MyParser yahtml_parser.yy ${CMAKE_CURRENT_BINARY_DIR}/yahtml_parser.cc COMPILE_FLAGS "-y")
+BISON_TARGET(MyParser parser.yy ${CMAKE_CURRENT_BINARY_DIR}/parser.cc COMPILE_FLAGS "-y")
 FLEX_TARGET(MyScanner scanner.ll ${CMAKE_CURRENT_BINARY_DIR}/scanner.cc)
 ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
 
