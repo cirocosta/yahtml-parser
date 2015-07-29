@@ -1,4 +1,5 @@
-# yahtmlarser
+# yahtml-parser
+
 > A naive C++ HTML parser implementation using Bison and Flex
 
 **ATTENTION**: this is NOT a full spec conformant parser. It DOES NOT aim to comply with all of the requirements associated with the roles it partakes in the HTML specification.
@@ -13,14 +14,14 @@ Make sure that you have all the dependencies installed:
 - bison\*
 - make
 - cmake
-- a modern c++ compiler - targetting c++11 (i recommend clang, 3.5 is good)
+- a modern c++ compiler (gcc4.9 / gcc5.2)
 
 Then, simply:
 
 ```sh
 $ mkdir build
 $ cd build
-$ cmake ..
+$ cmake ..   (cmake -Dtest=ON .. in case you want tests)
 $ make && make test
 ```
 
@@ -29,14 +30,14 @@ $ make && make test
 export BISON_PKGDATADIR=/usr/local/share/bison/data
 ```
 
-## XML-like Documents
+## CMake
 
-When dealing with this kind of documents we have two models for parsing: SAX-like and DOM-like. The first is event-driven, fast and consumes few memory. The later gives us a full tree representation that we can later consume.
+If you wish to include `yahtml-parser` in your project:
 
-
-## Resources
-
-1. [Stream Processing of XML Documents Made Easy with LALR(1) Parser Generators , Padovani, L., Zac- chiroli, S., Vitali, F., September 2007](https://upsilon.cc/~zack/research/publications/flea.pdf)
+```
+yahtml-parser_INCLUDES  : headers to be included
+yahtml-parser_LIBS      : libs to be linked against
+```
 
 ## LICENSE
 
