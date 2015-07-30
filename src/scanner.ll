@@ -28,7 +28,7 @@ static yahtml::location loc;
 
 ALPHA               [a-zA-Z]
 DIGIT               [0-9]
-NAME                {ALPHA}({ALPHA}|{DIGIT})+
+NAME                {ALPHA}({ALPHA}|{DIGIT}|"-")+
 TEXT                [^><]+
 
 ATTR_KEY            " "{NAME}"="

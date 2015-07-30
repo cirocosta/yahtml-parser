@@ -8,7 +8,7 @@ using namespace yahtml;
 TEST(Html, SingleH1) {
   bool debug = false;
   HTMLDriver driver (debug, debug);
-  driver.parse_source("<h1></h1>");
+  driver.parse_source("<h1 data-name=\"NAME\"></h1>");
 
   EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
   EXPECT_EQ(driver.dom.get()->children.size(), 1);
@@ -16,7 +16,8 @@ TEST(Html, SingleH1) {
   Element* h1 = dynamic_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(h1->tag_name, "h1");
-  EXPECT_EQ(h1->attr_map.size(), 0);
+  EXPECT_EQ(h1->attr_map.size(), 1);
+  EXPECT_EQ(h1->attr_map["data-name"], "NAME");
   EXPECT_EQ(h1->children.size(), 1);
   EXPECT_EQ(h1->children.front().get()->type, NodeType::Text);
 }
