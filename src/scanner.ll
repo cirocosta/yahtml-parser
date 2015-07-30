@@ -27,7 +27,8 @@ static yahtml::location loc;
 %x TAG
 
 ALPHA               [a-zA-Z]
-NAME                {ALPHA}+
+DIGIT               [0-9]
+NAME                {ALPHA}({ALPHA}|{DIGIT})+
 TEXT                [^><]+
 
 ATTR_KEY            " "{NAME}"="
