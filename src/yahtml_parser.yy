@@ -1,7 +1,7 @@
 %skeleton "lalr1.cc" /* -*- C++ -*- */
 %require "3.0.4"
 
-%defines
+%define api.prefix {yahtml}
 %define api.namespace {yahtml}
 %define parser_class_name {HTMLParser}
 %define api.token.constructor

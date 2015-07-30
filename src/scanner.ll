@@ -22,6 +22,7 @@ static yahtml::location loc;
 %}
 
 %option noyywrap nounput batch debug noinput
+%option prefix="yahtml"
 
 %x TAG
 
