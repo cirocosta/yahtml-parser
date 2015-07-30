@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include "parser.hh"
+#include "yahtml_parser.hh"
 #include "yahtml/DOM.hh"
 
 
