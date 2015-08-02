@@ -77,7 +77,6 @@ END_TAG             "</"{NAME}">"
 
 {TEXT}          return yahtml::HTMLParser::make_TEXT(yytext, loc);
 
-">"             return yahtml::HTMLParser::make_AB_RIGHT(loc);
 
 .               driver.error(loc, "Invalid Character");
 

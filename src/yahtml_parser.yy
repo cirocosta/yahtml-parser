@@ -50,7 +50,7 @@ YY_DECL;
   ATTR_KEY
   ATTR_VALUE
 ;
-%type <DOMChild> dom element;
+%type <DOMChild> dom element text_element;
 %type <DOMChildren> value;
 %type <AttrMap> attrs;
 %type <Attr> attr;
@@ -61,8 +61,8 @@ YY_DECL;
 
 %start dom;
 
-dom:
-  element  { driver.dom = $1; $$ = driver.dom; }
+dom
+  : element  { driver.dom = $1; $$ = driver.dom; }
   ;
 
 element
@@ -90,11 +90,16 @@ attrs
   | attrs attr   { $1.emplace($2); $$ = $1; }
   ;
 
+text_element
+  : %empty        { $$ = DOMChild (new Text("")); }
+  | TEXT          { $$ = DOMChild (new Text($1)); }
+  ;
+
 value
-  :  %empty         {$$ = DOMChildren { DOMChild (new Text("")) }; }
-  |  element        {$$ = DOMChildren { $1 }; }
-  |  TEXT           {$$ = DOMChildren { DOMChild (new Text($1)) }; }
-  |  value element  {$1.push_back($2); $$ = $1; }
+  : element             { $$ = DOMChildren { $1 }; }
+  | text_element        { $$ = DOMChildren { $1 }; }
+  | value element       { $1.push_back($2); $$ = $1; }
+  | value text_element  { $1.push_back($2); $$ = $1; }
   ;
 
 %%

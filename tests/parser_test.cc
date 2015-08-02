@@ -252,3 +252,16 @@ TEST(Html, MultipleClassesAttribute) {
   EXPECT_EQ(body->classes[2], "lol");
 }
 
+TEST(Html, ElementWithSimblingText) {
+  bool debug = false;
+  HTMLDriver driver(debug, debug);
+  const char* source =
+    "<body>"
+      "<h1></h1>"
+      "huehue <strong>brbr</strong> huehue"
+    "</body>";
+
+  driver.parse_source(source);
+  ASSERT_EQ(driver.result, 0);
+}
+
