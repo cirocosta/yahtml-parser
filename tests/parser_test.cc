@@ -276,7 +276,24 @@ TEST(Html, DoctypeHtml5) {
   bool debug = false;
   HTMLDriver driver(debug, debug);
   const char* source =
+    "<!DOCTYPE html>\n"
+    "<body>"
+      "<h1></h1>"
+      "huehue <strong>brbr</strong> huehue"
+    "</body>";
+
+  driver.parse_source(source);
+  ASSERT_EQ(driver.result, 0);
+  Element* body = static_cast<Element*>(driver.dom.get());
+  EXPECT_EQ(body->children.size(), 4);
+}
+
+TEST(Html, Comments) {
+  bool debug = false;
+  HTMLDriver driver(debug, debug);
+  const char* source =
     "<!DOCTYPE html>"
+    "\t<!-- huehue brbr comment -->\n\n\n"
     "<body>"
       "<h1></h1>"
       "huehue <strong>brbr</strong> huehue"

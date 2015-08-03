@@ -52,6 +52,8 @@ END_TAG             "</"{NAME}">"
   loc.step();
 %}
 
+{SP}*"<!--"[^>]*"-->"{SP}* { }
+
 (?i:{DOCTYPE})  return yahtml::HTMLParser::make_DOCTYPE(loc);
 
 {START_TAG}     {
