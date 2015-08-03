@@ -13,7 +13,7 @@ TEST(Html, SingleH1) {
   EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
   EXPECT_EQ(driver.dom.get()->children.size(), 1);
 
-  Element* h1 = dynamic_cast<Element*>(driver.dom.get());
+  Element* h1 = static_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(h1->tag_name, "h1");
   EXPECT_EQ(h1->attr_map.size(), 1);
@@ -31,14 +31,14 @@ TEST(Html, NestedWithoutText) {
   EXPECT_EQ(driver.dom.get()->children.front().get()->type,
             NodeType::Element);
 
-  Element* body = dynamic_cast<Element*>(driver.dom.get());
+  Element* body = static_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(body->tag_name, "body");
   EXPECT_EQ(body->attr_map.size(), 0);
   EXPECT_EQ(body->children.size(), 1);
   EXPECT_EQ(body->children.front().get()->type, NodeType::Element);
 
-  Element* tag = dynamic_cast<Element*>(body->children.front().get());
+  Element* tag = static_cast<Element*>(body->children.front().get());
 
   EXPECT_EQ(tag->tag_name, "tag");
   EXPECT_EQ(tag->attr_map.size(), 0);
@@ -54,21 +54,21 @@ TEST(Html, NestedWithText) {
   EXPECT_EQ(driver.dom.get()->children.front().get()->type,
             NodeType::Element);
 
-  Element* body = dynamic_cast<Element*>(driver.dom.get());
+  Element* body = static_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(body->tag_name, "body");
   EXPECT_EQ(body->attr_map.size(), 0);
   EXPECT_EQ(body->children.size(), 1);
   EXPECT_EQ(body->children.front().get()->type, NodeType::Element);
 
-  Element* tag = dynamic_cast<Element*>(body->children.front().get());
+  Element* tag = static_cast<Element*>(body->children.front().get());
 
   EXPECT_EQ(tag->tag_name, "tag");
   EXPECT_EQ(tag->attr_map.size(), 0);
   EXPECT_EQ(tag->children.size(), 1);
   EXPECT_EQ(tag->children.front().get()->type, NodeType::Text);
 
-  Text* text = dynamic_cast<Text*>(tag->children.front().get());
+  Text* text = static_cast<Text*>(tag->children.front().get());
 
   EXPECT_EQ(text->text, "text");
 }
@@ -88,7 +88,7 @@ TEST(Html, NestedWithSimblings) {
 
   EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
 
-  Element* body = dynamic_cast<Element*>(driver.dom.get());
+  Element* body = static_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(body->tag_name, "body");
   EXPECT_EQ(body->attr_map.size(), 0);
@@ -97,8 +97,8 @@ TEST(Html, NestedWithSimblings) {
   EXPECT_EQ(body->children[0]->type, NodeType::Element);
   EXPECT_EQ(body->children[1]->type, NodeType::Element);
 
-  Element* tag1 = dynamic_cast<Element*>(body->children[0].get());
-  Element* tag2 = dynamic_cast<Element*>(body->children[1].get());
+  Element* tag1 = static_cast<Element*>(body->children[0].get());
+  Element* tag2 = static_cast<Element*>(body->children[1].get());
 
   EXPECT_EQ(tag1->tag_name, "tag");
   EXPECT_EQ(tag1->attr_map.size(), 0);
@@ -126,7 +126,7 @@ TEST(Html, NestedWithDifferentSimblings) {
 
   EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
 
-  Element* body = dynamic_cast<Element*>(driver.dom.get());
+  Element* body = static_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(body->tag_name, "body");
   EXPECT_EQ(body->attr_map.size(), 0);
@@ -135,8 +135,8 @@ TEST(Html, NestedWithDifferentSimblings) {
   EXPECT_EQ(body->children[0]->type, NodeType::Element);
   EXPECT_EQ(body->children[1]->type, NodeType::Element);
 
-  Element* tag1 = dynamic_cast<Element*>(body->children[0].get());
-  Element* tag2 = dynamic_cast<Element*>(body->children[1].get());
+  Element* tag1 = static_cast<Element*>(body->children[0].get());
+  Element* tag2 = static_cast<Element*>(body->children[1].get());
 
   EXPECT_EQ(tag1->tag_name, "tag");
   EXPECT_EQ(tag1->attr_map.size(), 0);
@@ -160,7 +160,7 @@ TEST(Html, FlatWithOneAttribute) {
 
   EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
 
-  Element* body = dynamic_cast<Element*>(driver.dom.get());
+  Element* body = static_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(body->tag_name, "body");
   EXPECT_EQ(body->attr_map.size(), 1);
@@ -183,7 +183,7 @@ TEST(Html, NestedMultipleAttributes) {
 
   EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
 
-  Element* body = dynamic_cast<Element*>(driver.dom.get());
+  Element* body = static_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(body->tag_name, "body");
 
@@ -196,8 +196,8 @@ TEST(Html, NestedMultipleAttributes) {
   EXPECT_EQ(body->children[1]->type, NodeType::Element);
 
 
-  Element* tag1 = dynamic_cast<Element*>(body->children[0].get());
-  Element* tag2 = dynamic_cast<Element*>(body->children[1].get());
+  Element* tag1 = static_cast<Element*>(body->children[0].get());
+  Element* tag2 = static_cast<Element*>(body->children[1].get());
 
   EXPECT_EQ(tag1->attr_map.size(), 1);
   EXPECT_EQ(tag2->attr_map.size(), 1);
@@ -207,7 +207,7 @@ TEST(Html, NestedMultipleAttributes) {
   EXPECT_EQ(tag2->children.front().get()->type, NodeType::Text);
 
 
-  Text* text = dynamic_cast<Text*>(tag2->children.front().get());
+  Text* text = static_cast<Text*>(tag2->children.front().get());
   EXPECT_EQ(text->text, "huehue brbr");
 }
 
@@ -222,7 +222,7 @@ TEST(Html, EmptyClassAttribute) {
 
   EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
 
-  Element* body = dynamic_cast<Element*>(driver.dom.get());
+  Element* body = static_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(body->tag_name, "body");
   EXPECT_EQ(body->attr_map.size(), 1);
@@ -241,7 +241,7 @@ TEST(Html, MultipleClassesAttribute) {
 
   EXPECT_EQ(driver.dom.get()->type, NodeType::Element);
 
-  Element* body = dynamic_cast<Element*>(driver.dom.get());
+  Element* body = static_cast<Element*>(driver.dom.get());
 
   EXPECT_EQ(body->tag_name, "body");
   EXPECT_EQ(body->attr_map.size(), 1);
@@ -263,7 +263,13 @@ TEST(Html, ElementWithSimblingText) {
 
   driver.parse_source(source);
   ASSERT_EQ(driver.result, 0);
-  // FIXME include a test that matters
+
+  Element* body = static_cast<Element*>(driver.dom.get());
+  EXPECT_EQ(body->children.size(), 4);
+  EXPECT_EQ(body->children.at(0)->type, NodeType::Element);
+  EXPECT_EQ(body->children.at(1)->type, NodeType::Text);
+  EXPECT_EQ(body->children.at(2)->type, NodeType::Element);
+  EXPECT_EQ(body->children.at(3)->type, NodeType::Text);
 }
 
 TEST(Html, DoctypeHtml5) {
@@ -278,5 +284,7 @@ TEST(Html, DoctypeHtml5) {
 
   driver.parse_source(source);
   ASSERT_EQ(driver.result, 0);
+  Element* body = static_cast<Element*>(driver.dom.get());
+  EXPECT_EQ(body->children.size(), 4);
 }
 
