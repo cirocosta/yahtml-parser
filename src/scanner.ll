@@ -30,10 +30,12 @@ ALPHA               [a-zA-Z]
 DIGIT               [0-9]
 NAME                {ALPHA}({ALPHA}|{DIGIT}|"-")*
 TEXT                [^><]+
+SP                  [ \t\r\n]
 
 ATTR_KEY            " "{NAME}"="
 ATTR_VALUE          \"([^\"]|\\.)*\"
 
+DOCTYPE             "<!doctype"{SP}+"html"{SP}*">"{SP}*
 AB_RIGHT            ">"
 START_TAG           "<"{NAME}
 END_TAG             "</"{NAME}">"
@@ -49,6 +51,8 @@ END_TAG             "</"{NAME}">"
   // Code run each time yylex is called.
   loc.step();
 %}
+
+(?i:{DOCTYPE})  return yahtml::HTMLParser::make_DOCTYPE(loc);
 
 {START_TAG}     {
                   BEGIN(TAG);

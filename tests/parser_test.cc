@@ -263,5 +263,20 @@ TEST(Html, ElementWithSimblingText) {
 
   driver.parse_source(source);
   ASSERT_EQ(driver.result, 0);
+  // FIXME include a test that matters
+}
+
+TEST(Html, DoctypeHtml5) {
+  bool debug = false;
+  HTMLDriver driver(debug, debug);
+  const char* source =
+    "<!DOCTYPE html>"
+    "<body>"
+      "<h1></h1>"
+      "huehue <strong>brbr</strong> huehue"
+    "</body>";
+
+  driver.parse_source(source);
+  ASSERT_EQ(driver.result, 0);
 }
 

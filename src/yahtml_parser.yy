@@ -40,7 +40,8 @@ YY_DECL;
 %define api.token.prefix {HTML_}
 %token
   END 0             "End of File (EOF)"
-  AB_RIGHT
+  AB_RIGHT          ">"
+  DOCTYPE           "<!DOCTYPE html>\n"
 ;
 %token <std::string>
   NAME
@@ -62,7 +63,8 @@ YY_DECL;
 %start dom;
 
 dom
-  : element  { driver.dom = $1; $$ = driver.dom; }
+  : element         { driver.dom = $1; $$ = driver.dom; }
+  | DOCTYPE element { driver.dom = $2; $$ = driver.dom; }
   ;
 
 element
