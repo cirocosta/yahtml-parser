@@ -45,6 +45,32 @@ TEST(Html, NestedWithoutText) {
   EXPECT_EQ(tag->children.size(), 1);
 }
 
+TEST(Html, NestedWithNewlines) {
+  bool debug = false;
+  const char* source =
+    "<body>\n"
+    "\t<tag>\n"
+    "\t</tag>\n"
+    "</body>"
+    ;
+
+  HTMLDriver driver (debug, debug);
+  driver.parse_source(source);
+  ASSERT_EQ(driver.result, 0);
+
+  Element* body = static_cast<Element*>(driver.dom.get());
+  EXPECT_EQ(body->tag_name, "body");
+  EXPECT_EQ(body->attr_map.size(), 0);
+  EXPECT_EQ(body->children.size(), 1);
+  EXPECT_EQ(body->children.front().get()->type, NodeType::Element);
+
+  Element* tag = static_cast<Element*>(body->children.front().get());
+  EXPECT_EQ(tag->tag_name, "tag");
+  EXPECT_EQ(tag->attr_map.size(), 0);
+  EXPECT_EQ(tag->children.size(), 1);
+}
+
+
 TEST(Html, NestedWithText) {
   bool debug = false;
   HTMLDriver driver (debug, debug);
@@ -288,14 +314,14 @@ TEST(Html, DoctypeHtml5) {
   EXPECT_EQ(body->children.size(), 4);
 }
 
-TEST(Html, Comments) {
+TEST(Html, CommentsRightAfterDoctype) {
   bool debug = false;
   HTMLDriver driver(debug, debug);
   const char* source =
-    "<!DOCTYPE html>"
+    "<!DOCTYPE html>\n"
     "\t<!-- huehue brbr comment -->\n\n\n"
-    "<body>"
-      "<h1></h1>"
+    "<body>\n"
+      "<h1>\n</h1>"
       "huehue <strong>brbr</strong> huehue"
     "</body>";
 
@@ -303,5 +329,32 @@ TEST(Html, Comments) {
   ASSERT_EQ(driver.result, 0);
   Element* body = static_cast<Element*>(driver.dom.get());
   EXPECT_EQ(body->children.size(), 4);
+
+  Text* text1 = static_cast<Text*>(body->children.at(1).get());
+  EXPECT_EQ(text1->text, "huehue ");
+  Text* text2 = static_cast<Text*>(body->children.at(3).get());
+  EXPECT_EQ(text2->text, " huehue");
+}
+
+TEST(Html, CommentsInTheMiddle) {
+  bool debug = false;
+  HTMLDriver driver(debug, debug);
+  const char* source =
+    "<!DOCTYPE html>\n"
+    "<body>\n"
+      "\t<!-- huehue brbr comment -->\n\n\n"
+      "<h1>\n</h1>"
+      "huehue <strong>brbr</strong> huehue"
+    "</body>";
+
+  driver.parse_source(source);
+  ASSERT_EQ(driver.result, 0);
+  Element* body = static_cast<Element*>(driver.dom.get());
+  EXPECT_EQ(body->children.size(), 4);
+
+  Text* text1 = static_cast<Text*>(body->children.at(1).get());
+  EXPECT_EQ(text1->text, "huehue ");
+  Text* text2 = static_cast<Text*>(body->children.at(3).get());
+  EXPECT_EQ(text2->text, " huehue");
 }
 

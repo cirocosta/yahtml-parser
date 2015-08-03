@@ -36,7 +36,7 @@ ATTR_KEY            " "{NAME}"="
 ATTR_VALUE          \"([^\"]|\\.)*\"
 
 DOCTYPE             "<!doctype"{SP}+"html"{SP}*">"{SP}*
-AB_RIGHT            ">"
+AB_RIGHT            ">"{SP}*
 START_TAG           "<"{NAME}
 END_TAG             "</"{NAME}">"
 
@@ -52,7 +52,8 @@ END_TAG             "</"{NAME}">"
   loc.step();
 %}
 
-{SP}*"<!--"[^>]*"-->"{SP}* { }
+{SP}*"<!--"[^>]*"-->"{SP}*   { }
+{SP}*                        { }
 
 (?i:{DOCTYPE})  return yahtml::HTMLParser::make_DOCTYPE(loc);
 
@@ -82,7 +83,6 @@ END_TAG             "</"{NAME}">"
                 }
 
 {TEXT}          return yahtml::HTMLParser::make_TEXT(yytext, loc);
-
 
 .               driver.error(loc, "Invalid Character");
 
